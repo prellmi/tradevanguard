@@ -145,5 +145,5 @@ def find_station_trades(
                 units_per_day=units,
             ))
 
-    results.sort(key=lambda t: (t.daily_profit or 0, t.roi), reverse=True)
+    results.sort(key=lambda t: (-(t.daily_profit or 0), -t.roi, t.item.id, t.station.id))
     return results

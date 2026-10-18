@@ -1,0 +1,49 @@
+name: Deploy browser version to GitHub Pages
+
+on:
+  push:
+    branches: [browser]
+  # Weekly rebuild picks up a new Static Data Export after game patches.
+  schedule:
+    - cron: "17 12 * * 3"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v6
+
+      - name: Test the browser engine
+        working-directory: web
+        run: node --test "tests/*.test.mjs"
+
+      - name: Export universe data from the latest SDE
+        run: uv run tradevanguard export-universe web/data/universe.json --update
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: web
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

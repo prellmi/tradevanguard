@@ -252,5 +252,6 @@ def find_opportunities(
                     max_bid_price=max_bid,
                 ))
 
-    results.sort(key=lambda o: o.fill.profit, reverse=True)
+    # NPC-seeded orders often tie exactly; prefer the shorter route, then keep the order stable.
+    results.sort(key=lambda o: (-o.fill.profit, o.total_jumps, o.source.id, o.destination.id))
     return results

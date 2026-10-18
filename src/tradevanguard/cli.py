@@ -6,6 +6,7 @@ import argparse
 import asyncio
 import sys
 import time
+from pathlib import Path
 
 from . import config, sde
 from .api import SORT_KEYS, STATION_SORT_KEYS, rank
@@ -54,6 +55,15 @@ def print_opportunity(rank: int, opp: Opportunity) -> None:
 def cmd_update_sde(args: argparse.Namespace) -> None:
     path = sde.ensure_universe(config.DATA_DIR, update=True)
     print(f"Universe data: {path}")
+
+
+def cmd_export_universe(args: argparse.Namespace) -> None:
+    import shutil
+
+    source = sde.ensure_universe(config.DATA_DIR, update=args.update)
+    args.target.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(source, args.target)
+    print(f"Wrote {args.target} ({args.target.stat().st_size / 1e6:.1f} MB) from {source.name}")
 
 
 def cmd_scan(args: argparse.Namespace) -> None:
@@ -151,6 +161,12 @@ def main(argv: list[str] | None = None) -> None:
     sub = parser.add_subparsers(dest="command", required=True)
 
     sub.add_parser("update-sde", help="download the latest Static Data Export").set_defaults(func=cmd_update_sde)
+
+    export = sub.add_parser("export-universe", help="write the universe data file for the browser version")
+    export.add_argument("target", type=Path, nargs="?", default=Path("web/data/universe.json"),
+                        help="output file (default web/data/universe.json)")
+    export.add_argument("--update", action="store_true", help="check for a newer SDE first")
+    export.set_defaults(func=cmd_export_universe)
 
     scan = sub.add_parser("scan", help="find hauling opportunities around a system")
     scan.add_argument("origin", help="starting solar system, e.g. Jita")
