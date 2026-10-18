@@ -1,5 +1,5 @@
 // Station trading: buy with a buy order and resell with a sell order at the same station.
-// Port of src/tradevanguard/station.py. Both orders pay a broker fee; the sale also pays sales tax.
+// Both orders pay a broker fee; the sale also pays sales tax.
 
 export const STATION_DEFAULTS = {
   maxJumps: 0,

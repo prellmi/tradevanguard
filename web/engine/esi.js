@@ -1,7 +1,7 @@
 // Browser client for the public market endpoints of the EVE Swagger Interface (ESI).
-// Port of src/tradevanguard/esi.py. Requests carry no custom headers, so they are CORS
-// "simple requests" without preflight; browsers can't set User-Agent, so the app
-// identifies itself with the `user_agent` query parameter instead.
+// Requests carry no custom headers, so they are CORS "simple requests" without preflight;
+// browsers can't set User-Agent, so the app identifies itself with the `user_agent` query
+// parameter instead.
 
 const ESI_BASE = "https://esi.evetech.net";
 const ERROR_LIMIT_FLOOR = 20;

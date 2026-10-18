@@ -4,11 +4,11 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 
-import { ESIClient, memoryStore } from "../engine/esi.js";
-import { Market, marketStats } from "../engine/market.js";
-import { findStationTrades, outbid, priceTick, STATION_DEFAULTS, undercut } from "../engine/station.js";
-import { findOpportunities, indexOrders, planFill, SCAN_DEFAULTS } from "../engine/trade.js";
-import { displaySecurity, Universe } from "../engine/universe.js";
+import { ESIClient, memoryStore } from "../web/engine/esi.js";
+import { Market, marketStats } from "../web/engine/market.js";
+import { findStationTrades, outbid, priceTick, STATION_DEFAULTS, undercut } from "../web/engine/station.js";
+import { findOpportunities, indexOrders, planFill, SCAN_DEFAULTS } from "../web/engine/trade.js";
+import { displaySecurity, Universe } from "../web/engine/universe.js";
 
 let nextId = 1;
 const order = (price, qty, { buy, station, system, type = 34, minVolume = 1 }) => ({

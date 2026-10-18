@@ -10,7 +10,7 @@ const USER_AGENT = "tradevanguard-web (+https://github.com/prellmi/tradevanguard
 
 const ready = (async () => {
   const resp = await fetch(new URL("../data/universe.json", import.meta.url));
-  if (!resp.ok) throw new Error(`Could not load universe data (${resp.status}). Run 'tradevanguard export-universe'.`);
+  if (!resp.ok) throw new Error(`Could not load universe data (${resp.status}). Run 'npm run build:data'.`);
   const universe = new Universe(await resp.json());
   return new Market(universe, new ESIClient({ userAgent: USER_AGENT, store: indexedDbStore() }));
 })();

@@ -1,8 +1,0 @@
-[
-  {"name": "jita-haul", "type": "scan", "params": {"origin": "Jita", "jumps": "5", "cargo": "10000", "isk": "500000000", "limit": "500"}},
-  {"name": "jita-haul-all-routes", "type": "scan", "params": {"origin": "Jita", "jumps": "5", "all_routes": "true", "min_profit": "500000", "sort": "jump", "limit": "500"}},
-  {"name": "jita-haul-unchecked", "type": "scan", "params": {"origin": "Jita", "jumps": "5", "volume_check": "false", "price_check": "false", "limit": "500"}},
-  {"name": "jita-haul-anywhere", "type": "scan", "params": {"origin": "Jita", "jumps": "4", "min_security": "-1", "sales_tax": "3.37", "limit": "500"}},
-  {"name": "jita-station", "type": "station", "params": {"origin": "Jita", "isk": "1000000000", "limit": "1000"}},
-  {"name": "jita-station-roi", "type": "station", "params": {"origin": "Jita", "jumps": "2", "sort": "roi", "min_margin": "10", "broker_fee": "1.5", "limit": "1000"}}
-]

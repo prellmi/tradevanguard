@@ -1,5 +1,5 @@
 // Hauling: buy from sell orders at A, carry to B, sell into buy orders at B.
-// Port of src/tradevanguard/trade.py. Both legs are instant, so only sales tax applies.
+// Both legs are instant transactions, so only sales tax applies.
 
 export const SCAN_DEFAULTS = {
   maxJumps: 5,

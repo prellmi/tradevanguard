@@ -1,5 +1,5 @@
-// Market data service and scan pipeline. Port of src/tradevanguard/market.py plus the JSON
-// shaping from api.py, so the page receives the same responses as from the Python server.
+// Market data service and scan pipeline: fetches orders and history, runs the scans and
+// shapes the results as JSON for the page (snake_case keys, rounded numbers).
 
 import { findOpportunities, indexOrders, needsHistory, pricePremium, profitPerJump, roi, SCAN_DEFAULTS,
          totalJumps } from "./trade.js";
@@ -27,7 +27,7 @@ const STATION_SORT = {
   roi: (t) => t.roi,
 };
 
-// ---------- request parameters (same names and units as the Python API) ----------
+// ---------- request parameters (snake_case names, percentages as numbers like 7.5) ----------
 
 function number(query, key, fallback, { min = -Infinity, max = Infinity } = {}) {
   const raw = query[key];
@@ -202,7 +202,7 @@ export class Market {
     return `${this.universe.systems.get(station.systemId).regionId}:${typeId}`;
   }
 
-  /** Hauling scan; `query` uses the Python API's parameter names and units. */
+  /** Hauling scan; `query` holds the page's form values. */
   async scan(query, progress = () => {}) {
     const started = performance.now();
     const origin = this.universe.systemByName(query.origin ?? "");
@@ -231,7 +231,7 @@ export class Market {
     };
   }
 
-  /** Station trading scan; `query` uses the Python API's parameter names and units. */
+  /** Station trading scan; `query` holds the page's form values. */
   async stationScan(query, progress = () => {}) {
     const started = performance.now();
     const origin = this.universe.systemByName(query.origin ?? "");

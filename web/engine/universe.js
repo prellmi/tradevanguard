@@ -1,5 +1,5 @@
 // Static universe: systems, stations, item types and the stargate jump graph.
-// Port of src/tradevanguard/universe.py; loads the file written by `tradevanguard export-universe`.
+// Loads web/data/universe.json, built by tools/build-universe.mjs.
 
 /** Security status as shown in game: rounded to one decimal, but never 0.0 for positive values. */
 export function displaySecurity(sec) {
