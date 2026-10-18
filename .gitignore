@@ -218,3 +218,6 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# TradeVanguard: downloaded SDE, reduced universe file and ESI caches
+data/

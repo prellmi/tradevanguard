@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TradeVanguard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-mode="haul">
+  <header>
+    <h1>TradeVanguard</h1>
+    <nav class="modes" role="tablist" aria-label="Trading mode">
+      <button type="button" role="tab" data-mode="haul" aria-selected="true">Hauling</button>
+      <button type="button" role="tab" data-mode="station" aria-selected="false">Station trading</button>
+    </nav>
+    <span id="freshness" class="muted"></span>
+  </header>
+
+  <form id="filters" autocomplete="off">
+    <fieldset>
+      <legend>Location</legend>
+      <label>Origin system
+        <input name="origin" list="system-list" required placeholder="Jita">
+        <datalist id="system-list"></datalist>
+      </label>
+      <label class="haul-only">Radius (jumps)
+        <input name="jumps" type="number" min="0" max="30" value="5">
+      </label>
+      <label class="station-only">Include stations within (jumps)
+        <input name="station_jumps" type="number" min="0" max="30" value="0">
+      </label>
+      <label>Route security
+        <select name="min_security">
+          <option value="0.5">High-sec only</option>
+          <option value="0.1">Avoid null-sec</option>
+          <option value="-1">Anywhere</option>
+        </select>
+      </label>
+    </fieldset>
+
+    <fieldset>
+      <legend>Wallet &amp; skills</legend>
+      <label class="haul-only">Cargo (m³)
+        <input name="cargo" type="number" min="0" step="any" placeholder="unlimited">
+      </label>
+      <label class="haul-only">Max invest per trade
+        <input name="isk" placeholder="e.g. 500m" pattern="\s*[0-9.,]+\s*[kmbKMB]?\s*">
+      </label>
+      <label class="station-only">Max capital per item / day
+        <input name="station_isk" placeholder="e.g. 200m" pattern="\s*[0-9.,]+\s*[kmbKMB]?\s*">
+      </label>
+      <label>Sales tax (%)
+        <input name="sales_tax" type="number" min="0" max="100" step="0.01" value="7.5">
+      </label>
+      <label class="station-only">Broker fee per order (%)
+        <input name="broker_fee" type="number" min="0" max="100" step="0.01" value="3">
+      </label>
+    </fieldset>
+
+    <fieldset>
+      <legend>Filters</legend>
+      <label><span class="haul-only">Min profit</span><span class="station-only">Min profit / day</span>
+        <input name="min_profit" value="1m" pattern="\s*[0-9.,]+\s*[kmbKMB]?\s*">
+      </label>
+      <label class="station-only">Min margin (%)
+        <input name="min_margin" type="number" min="0" step="any" value="5">
+      </label>
+      <label class="station-only" title="How much of the region's daily volume you expect to trade yourself">Your share of volume (%)
+        <input name="volume_share" type="number" min="0.1" max="100" step="any" value="10">
+      </label>
+      <label class="haul-only">Volume cap (days)
+        <input name="volume_cap" type="number" min="0.01" step="any" value="1">
+      </label>
+      <label>Max price vs avg (×)
+        <input name="max_price_ratio" type="number" min="1" step="0.1" value="2">
+      </label>
+      <label class="check haul-only"><input name="volume_check" type="checkbox" checked> Check trade volume</label>
+      <label class="check"><input name="price_check" type="checkbox" checked>
+        <span class="haul-only">Ignore overpriced buy orders</span><span class="station-only">Skip spreads built on outlier prices</span></label>
+      <label class="check haul-only"><input name="all_routes" type="checkbox"> All routes per item</label>
+    </fieldset>
+
+    <div class="actions">
+      <button type="submit" id="scan-button">Scan</button>
+      <label class="check"><input id="auto-rescan" type="checkbox"> Rescan every 5 min</label>
+    </div>
+  </form>
+
+  <section id="summary" class="muted"></section>
+
+  <div class="table-wrap">
+    <table id="results" hidden>
+      <thead><tr></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
