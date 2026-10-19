@@ -16,12 +16,26 @@ Worker. There is no server.
 
 Only NPC stations are considered; player structures need a logged-in character.
 
+## Using the app
+
+- Switch between **Hauling** and **Station trading** at the top. Each mode has its
+  own filters and keeps its last results while you switch.
+- Type an origin system (names autocomplete), adjust the filters and press **Scan**.
+  ISK fields accept shorthand such as `250k`, `500m` or `1.5b`.
+- Click a column header to sort, and a row for details: full station names, the
+  price limits to buy and sell at, and a button that copies the item name for the
+  in-game market search.
+- Your filters are remembered in the browser. **Rescan every 5 min** keeps the
+  results current while you fly.
+- The first scan of a region downloads all its orders, and the page shows progress
+  while it does.
+
 ## Hauling
 
 Pick an origin system and a radius; both pickup and drop-off must lie within it.
 For each item and station pair the engine walks both order books, buying the
-cheapest sell orders and selling into the highest buy orders while
-`buy price × (1 − sales tax)` still beats the purchase price, within your cargo
+cheapest sell orders and selling into the highest buy orders while the buy order's
+price × (1 − sales tax) still beats the sell order you buy from, within your cargo
 space, ISK budget and each buy order's minimum volume. Routes respect the chosen
 security level (high-sec only by default).
 
@@ -36,6 +50,9 @@ security level (high-sec only by default).
 - Equally profitable routes (common with NPC-seeded orders) prefer fewer jumps.
 
 ## Station trading
+
+By default only stations in the origin system are considered; raise **Include
+stations within (jumps)** to scan nearby stations too.
 
 Your prices are one tick inside the spread: just above the highest buy order and
 just below the lowest sell order. EVE limits order prices to four significant
@@ -60,7 +77,11 @@ prices (one request) before market history is fetched per item.
   them for 5 minutes and the browser's HTTP cache reuses them within that window.
 - **History** (`/markets/{region}/history/`, one request per item) refreshes once a
   day at downtime and is kept in IndexedDB, so only the first scan of the day is
-  slow (about 20 seconds for a Jita station scan).
+  slow (about 15–20 seconds for a Jita station scan).
+- **Average prices** (`/markets/prices/`, one request for all items) are also kept
+  in IndexedDB until ESI publishes new ones.
+- Everything is cached per browser; there is no background refresh, so data is
+  fetched when you scan.
 - **Static data** (systems, stargates, stations, item volumes) comes from CCP's
   Static Data Export, reduced to `web/data/universe.json` (~2 MB) at deploy time.
 - Requests carry no custom headers, so they are CORS simple requests without
@@ -70,7 +91,8 @@ prices (one request) before market history is fetched per item.
 
 ## Development
 
-Requires Node.js 20 or newer; there are no dependencies to install.
+Requires Node.js 22 or newer (the test script relies on `node --test` file patterns);
+there are no dependencies to install.
 
 ```sh
 npm run build:data    # download the SDE and write web/data/universe.json
